@@ -7,7 +7,7 @@ import en_core_web_md
 import json 
 
 # @TASK : Load model bahasa 
-nlp = spacy.load('en_core_web_md')
+nlp = en_core_web_md.load()
 # END OF TASK 
 
 app = Flask(__name__)
@@ -29,10 +29,10 @@ def process():
                 df = pd.DataFrame(d, columns=['category', 'value'])
 
                 # @TASK : COMPLETE THE FOLLOWING CODES
-                ORG_named_entity = df.query('category' == 'ORG')['value'] # Subset semua entitas dengan kategori 'ORG'
-                PERSON_named_entity = df.query('category' =='PERSON')['value'] # Subset semua entitas dengan kategori 'PERSON'
-                GPE_named_entity = df.query('category' =='GPE')['value'] # Subset semua entitas dengan kategori 'GPE'
-                MONEY_named_entity = df.query('category'=='MONEY')['value'] # Subset semua entitas dengan kategori 'MONEY'
+                ORG_named_entity = df[df['category' == 'ORG']['value']] # Subset semua entitas dengan kategori 'ORG'
+                PERSON_named_entity = df[df['category' == 'PERSON']['value']] # Subset semua entitas dengan kategori 'PERSON'
+                GPE_named_entity = df[df['category' == 'GPE']['value']] # Subset semua entitas dengan kategori 'GPE'
+                MONEY_named_entity = df[df['category' == 'MONEY']['value']] # Subset semua entitas dengan kategori 'MONEY'
                 # END OF TASK 
 
             if choice == 'organization':
@@ -102,7 +102,7 @@ def get_entities():
     text = data['text']
     
     # modelkan teks dengan model scipy 
-    doc = en_core_web_md.load(text)
+    doc = nlp(text)
     
     # membuat pasangan label dan nilai entitas
     d = [(ent.label_,ent.text) for ent in doc.ents]
